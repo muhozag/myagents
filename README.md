@@ -14,4 +14,4 @@ This project demonstrates how one can interact with and compare different large 
 - Claude 3.5 Sonnet (`claude-3-5-sonnet-20240620`)
 - Mistral Small 3.1 (`mistral-small3.1:latest` via Ollama)
 
-This setup allows you to evaluate and compare the performance of different LLMs on the same question.
+The answers from each model are anonymously judged by Claude Sonnet 4. This makes it possible to evaluate and compare the performance of different LLMs on the same question.
