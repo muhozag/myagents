@@ -19,7 +19,7 @@ In comparellms.py, the answers from each model are anonymously judged by Claude 
 
 ## Chatting with a Resume or Professional Profile Using Claude 4
 
-`resourcesandtools.py` demonstrates how to use Claude 4 to interact with a resume (e.g., `GustaveResume - June 2025.pdf` in the `profile/` folder). The workflow involves:
+`resourcesandtools.py` demonstrates how to use an llm to interact with a resume (e.g., `GustaveResume - June 2025.pdf` in the `profile/` folder). The workflow involves:
 
 1. Loading the resume or summary from the `profile/` directory.
 2. Using Claude 4 to answer questions or chat about the resume content.
