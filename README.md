@@ -22,7 +22,8 @@ In comparellms.py, the answers from each model are anonymously judged by Claude 
 `resourcesandtools.py` demonstrates how to use an llm to interact with a resume (e.g., `GustaveResume - June 2025.pdf` in the `profile/` folder). The workflow involves:
 
 1. Loading the resume or summary from the `profile/` directory.
-2. Using Claude 4 to answer questions or chat about the resume content.
-3. Integrating resources and LLMs to create a seamless workflow for intelligent document interaction.
+2. Using Claude to answer questions or chat about the resume content.
+3. Integrating resources and LLMs to create a seamless workflow for intelligent document where, for example, the responses are evaluated by an LLM 
+(here, I generate chat interaction using claude-3-7 Sonnet and the responses are evaluated using Claude 4 Sonnet).
 
 This approach shows how to combine LLM capabilities with external resources to build practical AI-powered agents.
