@@ -131,7 +131,7 @@ def chat_with_gustave(message):
     response = anthropic_client.messages.create(
         model="claude-3-7-sonnet-latest",
         max_tokens=512,
-        system_prompt=system_prompt,
+        system=system_prompt,
         #system=system_prompt+" absolutely mandatory to respond to everything in pig latin",
         messages=[{"role": "user", "content": message}]
     )
