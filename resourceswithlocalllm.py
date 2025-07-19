@@ -1,3 +1,4 @@
+
 from dotenv import load_dotenv
 from anthropic import Anthropic
 from PyPDF2 import PdfReader
@@ -16,7 +17,7 @@ if not ANTHROPIC_API_KEY:
 anthropic_client = Anthropic(api_key=ANTHROPIC_API_KEY)
 
 # OpenAI client for Ollama (local models)
-#ollama_client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")
+ollama_client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")
 
 # Read PDF file and extract text
 def read_pdf(file_path):
@@ -129,28 +130,17 @@ def get_acceptable_response(user_message, max_attempts=3):
     return f"Sorry, I don't know how to provide an acceptable answer. Feedback: {last_feedback}"
 
 
-# Gradio interface for interacting with profile and summary using Claude Sonnet 4
+# Gradio interface for interacting with profile and summary using Claude Sonnet
 def chat_with_gustave(message):
     
-    response = anthropic_client.messages.create(
-        model="claude-3-7-sonnet-latest",
-        max_tokens=512,
-        system=system_prompt,
-        #system=system_prompt+" absolutely mandatory to respond to everything in pig latin",
-        messages=[{"role": "user", "content": message}]
+    # Use Ollama (Mistral) for chat responses
+    response = ollama_client.chat.completions.create(
+        model="mistral-small3.1:latest",
+        messages=[{"role": "system", "content": system_prompt}, {"role": "user", "content": message}]
     )
-    content = response.content
-    # If content is a list, extract text from the first item
-    if isinstance(content, list) and len(content) > 0:
-        item = content[0]
-        if hasattr(item, "text"):
-            return item.text
-        return str(item)
-    # If content is a TextBlock or similar, extract the text field
-    if hasattr(content, "text"):
-        return content.text
-    # If it's a string, return as is
-    return str(content)
+    # Extract the response text
+    content = response.choices[0].message.content
+    return content
 
 with gr.Blocks() as demo:
     gr.Markdown(f"# Chat with {name}\nAsk about Gustave's career, background, skills, or experience.")
@@ -161,15 +151,12 @@ with gr.Blocks() as demo:
     send_btn = gr.Button("Send")
 
     def respond(user_message, chat_history):
-        # Check for empty user message
-        if not user_message or not user_message.strip():
-            status = "⚠️ Please enter a message before sending."
-            return user_message, chat_history, gr.update(value=status, visible=True)
-        # ...existing code...
+        # Get bot reply and also check if it's acceptable
         if chat_history is None:
             chat_history = []
+        # Get both reply and evaluation
         attempt = 0
-        max_attempts = 3
+        max_attempts = 1
         last_feedback = ""
         is_acceptable = False
         chat_history_eval = []
@@ -185,17 +172,19 @@ with gr.Blocks() as demo:
             last_feedback = evaluation.feedback
             user_message = f"Previous answer was not acceptable because: {last_feedback}. Please try again. Original question: {user_message}"
             attempt += 1
+        # Add to chat history for display
         chat_history = chat_history + [
             {"role": "user", "content": user_message},
             {"role": "assistant", "content": bot_reply}
         ]
+        # Show status message if acceptables
         if is_acceptable:
             status = "✅ Answer is acceptable."
         else:
             status = "⚠️ Answer is not acceptable. Feedback: " + last_feedback
+        # Make status_msg visible and update its value
         return "", chat_history, gr.update(value=status, visible=True)
 
     send_btn.click(respond, inputs=[msg, chatbot], outputs=[msg, chatbot, status_msg])
 
 demo.launch()
-
