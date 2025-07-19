@@ -16,7 +16,7 @@ if not ANTHROPIC_API_KEY:
 anthropic_client = Anthropic(api_key=ANTHROPIC_API_KEY)
 
 # OpenAI client for Ollama (local models)
-ollama_client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")
+#ollama_client = OpenAI(base_url="http://localhost:11434/v1", api_key="ollama")
 
 # Read PDF file and extract text
 def read_pdf(file_path):
