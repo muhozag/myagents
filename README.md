@@ -6,7 +6,7 @@ This project demonstrates how one can interact with and compare different large 
 
 - **first_agent.py**: Starts by testing a single model API (Anthropic Claude) to ensure the environment and API setup work correctly.
 - **comparellm.py**: Compares the responses of several LLMs to a challenging question and judges their answers. The results are saved in `comparellms.md`.
-- **resourcesandtools.py**: Module for managing external resources and tools that can be used by agents or LLMs.
+- **resourcesandtools.py**: Module for managing external resources and tools that can be used by agents or LLMs (resourceswithlocalllm.py demoes this with local llm).
 - **comparellms.md**: Contains the question, the answers from each model, and the ranking of those answers.
 
 ## Models Compared and Judged
